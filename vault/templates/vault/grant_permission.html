@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grant Permission | TrustVault</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+```
+    .container {
+        max-width: 500px;
+        margin: 40px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+        color: #173b70;
+        margin-top: 0;
+    }
+
+    label {
+        display: block;
+        margin-top: 20px;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 12px;
+        box-sizing: border-box;
+        border: 1px solid #ccd4e0;
+        border-radius: 6px;
+    }
+
+    button, .back {
+        display: inline-block;
+        margin-top: 22px;
+        padding: 12px 18px;
+        border: none;
+        border-radius: 6px;
+        background: #2457c5;
+        color: white;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 15px;
+    }
+
+    .back {
+        background: #64748b;
+        margin-left: 8px;
+    }
+
+    .note {
+        color: #526176;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <h1>Grant Document Access</h1>
+
+```
+    <p><strong>Document:</strong> {{ document.title }}</p>
+
+    <p class="note">
+        Give an existing TrustVault user permission to access this document.
+    </p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="username">Username</label>
+        <input
+            type="text"
+            id="username"
+            name="username"
+            required
+            placeholder="Enter the user's exact username"
+        >
+
+        <label for="permission">Permission Level</label>
+        <select id="permission" name="permission" required>
+            <option value="read">Read — View and download</option>
+            <option value="edit">Edit — Read and edit access</option>
+        </select>
+
+        <button type="submit">Grant Permission</button>
+
+        <a href="{% url 'dashboard' %}" class="back">Back</a>
+    </form>
+</div>
+```
+
+</body>
+</html>

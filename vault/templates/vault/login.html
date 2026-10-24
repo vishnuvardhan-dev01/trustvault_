@@ -1,0 +1,638 @@
+```html
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#09090c">
+    <title>Login | TrustVault</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --red: #ed1c24;
+            --bright-red: #ff3038;
+            --dark: #09090c;
+            --panel: #111116;
+            --muted: #9999a6;
+            --white: #f8f8fb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--dark);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 35px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient red glow */
+        body::before {
+            content: "";
+            position: fixed;
+            width: 650px;
+            height: 650px;
+            left: -250px;
+            top: -250px;
+            background: radial-gradient(
+                circle,
+                rgba(237, 28, 36, 0.16),
+                transparent 70%
+            );
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            right: -300px;
+            bottom: -300px;
+            background: radial-gradient(
+                circle,
+                rgba(237, 28, 36, 0.12),
+                transparent 70%
+            );
+            pointer-events: none;
+        }
+
+        .web-background {
+            position: fixed;
+            inset: 0;
+            opacity: 0.12;
+            pointer-events: none;
+            background-image:
+                repeating-conic-gradient(
+                    from 0deg at 50% 0%,
+                    transparent 0deg 14deg,
+                    #ed1c24 14.3deg 14.5deg,
+                    transparent 14.8deg 30deg
+                );
+            mask-image: linear-gradient(
+                to bottom,
+                black,
+                transparent 65%
+            );
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 1150px;
+            min-height: 650px;
+            display: grid;
+            grid-template-columns: 1fr 0.9fr;
+            border: 1px solid #29232a;
+            border-radius: 28px;
+            overflow: hidden;
+            background: rgba(15, 15, 20, 0.96);
+            box-shadow:
+                0 35px 100px rgba(0, 0, 0, 0.65),
+                0 0 45px rgba(237, 28, 36, 0.06);
+        }
+
+        /* LEFT BRAND SECTION */
+
+        .hero {
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(237, 28, 36, 0.08),
+                    transparent 55%
+                ),
+                #0c0c11;
+            border-right: 1px solid #29232a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand {
+            position: absolute;
+            top: 35px;
+            left: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            letter-spacing: 2px;
+            font-size: 18px;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: var(--red);
+            color: white;
+            font-size: 23px;
+            box-shadow: 0 0 25px rgba(237, 28, 36, 0.35);
+        }
+
+        .brand span {
+            color: var(--red);
+        }
+
+        .spider-stage {
+            width: 230px;
+            height: 230px;
+            margin: 20px auto 45px;
+            border-radius: 50%;
+            border: 1px solid #502126;
+            display: grid;
+            place-items: center;
+            position: relative;
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(237, 28, 36, 0.15),
+                    transparent 70%
+                );
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .spider-stage::before,
+        .spider-stage::after {
+            content: "";
+            position: absolute;
+            border: 1px solid rgba(237, 28, 36, 0.35);
+            border-radius: 50%;
+        }
+
+        .spider-stage::before {
+            inset: 15px;
+        }
+
+        .spider-stage::after {
+            inset: 32px;
+            border-style: dashed;
+            animation: rotate 35s linear infinite;
+        }
+
+        .spider {
+            width: 115px;
+            height: 145px;
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 0 18px rgba(237, 28, 36, 0.35));
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(30px, 3.3vw, 44px);
+            line-height: 1.35;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: var(--red);
+        }
+
+        .hero-description {
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.9;
+            max-width: 420px;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 28px;
+        }
+
+        .feature {
+            border: 1px solid #382126;
+            background: #171116;
+            color: #d9cbd0;
+            padding: 10px 13px;
+            border-radius: 9px;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .feature b {
+            color: var(--red);
+            margin-right: 5px;
+        }
+
+        /* RIGHT LOGIN SECTION */
+
+        .login-panel {
+            padding: 70px 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .access-badge {
+            align-self: flex-start;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #482126;
+            background: #211115;
+            color: #ff8589;
+            border-radius: 50px;
+            padding: 10px 15px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.6px;
+            margin-bottom: 35px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--red);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--red);
+        }
+
+        .login-panel h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 35px;
+            letter-spacing: -1px;
+            margin-bottom: 13px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 35px;
+        }
+
+        .error-message {
+            color: #ffb9bc;
+            background: #291316;
+            border: 1px solid #753036;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 23px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.7px;
+            margin-bottom: 11px;
+        }
+
+        .input-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 16px;
+            background: #0b0b10;
+            border: 1px solid #303039;
+            border-radius: 12px;
+            transition: 0.25s;
+        }
+
+        .input-box:focus-within {
+            border-color: var(--red);
+            box-shadow: 0 0 0 3px rgba(237, 28, 36, 0.10);
+        }
+
+        .input-icon {
+            color: var(--red);
+            font-size: 18px;
+        }
+
+        .input-box input {
+            width: 100%;
+            min-width: 0;
+            height: 56px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            font-size: 14px;
+        }
+
+        .input-box input::placeholder {
+            color: #676773;
+        }
+
+        .toggle-password {
+            background: none;
+            border: none;
+            color: #9999a6;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .login-button {
+            width: 100%;
+            height: 59px;
+            border: 1px solid #ff454b;
+            border-radius: 12px;
+            background: linear-gradient(110deg, #c81019, #f12630);
+            color: white;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(237, 28, 36, 0.28);
+        }
+
+        .login-button span {
+            margin-left: 10px;
+            font-size: 19px;
+        }
+
+        .signup {
+            text-align: center;
+            margin-top: 27px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .signup a {
+            color: #ff535a;
+            text-decoration: none;
+            font-weight: 800;
+            margin-left: 4px;
+        }
+
+        .signup a:hover {
+            text-decoration: underline;
+        }
+
+        .bottom-note {
+            margin-top: 45px;
+            padding-top: 20px;
+            border-top: 1px solid #29232a;
+            text-align: center;
+            color: #74747f;
+            font-size: 10px;
+            letter-spacing: 1.2px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 rgba(237, 28, 36, 0); }
+            50% { box-shadow: 0 0 40px rgba(237, 28, 36, 0.09); }
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 850px) {
+            body {
+                padding: 18px;
+            }
+
+            .page {
+                max-width: 520px;
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 95px 30px 35px;
+                border-right: none;
+                border-bottom: 1px solid #29232a;
+            }
+
+            .brand {
+                top: 25px;
+                left: 30px;
+            }
+
+            .spider-stage {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto 28px;
+            }
+
+            .spider {
+                width: 75px;
+                height: 95px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .hero-description {
+                font-size: 13px;
+            }
+
+            .login-panel {
+                padding: 38px 30px;
+            }
+
+            .login-panel h2 {
+                font-size: 30px;
+            }
+
+            .bottom-note {
+                margin-top: 28px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="web-background"></div>
+
+<main class="page">
+
+    <!-- LEFT: TRUSTVAULT BRANDING -->
+    <section class="hero">
+
+        <div class="brand">
+            <div class="brand-icon">✦</div>
+            TRUST<span>VAULT</span>
+        </div>
+
+        <div class="spider-stage">
+            <!-- Decorative CSS illustration; no external character image needed -->
+            <svg class="spider" viewBox="0 0 120 150"
+                 xmlns="http://www.w3.org/2000/svg"
+                 role="img" aria-label="Spider-inspired security emblem">
+                <g fill="none" stroke="#ed1c24" stroke-width="4"
+                   stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M60 65 L37 43 L16 45 L6 28"/>
+                    <path d="M60 65 L29 68 L12 84 L4 79"/>
+                    <path d="M60 65 L35 89 L16 105 L6 100"/>
+                    <path d="M60 65 L48 103 L31 124 L18 120"/>
+                    <path d="M60 65 L83 43 L104 45 L114 28"/>
+                    <path d="M60 65 L91 68 L108 84 L116 79"/>
+                    <path d="M60 65 L85 89 L104 105 L114 100"/>
+                    <path d="M60 65 L72 103 L89 124 L102 120"/>
+                </g>
+                <path d="M60 20 C43 31 41 51 48 65 L60 79 L72 65 C79 51 77 31 60 20Z"
+                      fill="#ed1c24"/>
+                <path d="M49 39 L59 44 L49 53 L42 45Z" fill="#fff"/>
+                <path d="M71 39 L61 44 L71 53 L78 45Z" fill="#fff"/>
+                <path d="M60 78 L50 94 L60 105 L70 94Z" fill="#ed1c24"/>
+            </svg>
+        </div>
+
+        <h1>Your Files.<br><span>Your Control.</span></h1>
+
+        <p class="hero-description">
+            A smarter way to protect your documents.
+            Control access, share files securely, and keep track
+            of important document activity.
+        </p>
+
+        <div class="feature-list">
+            <div class="feature"><b>✦</b> SECURE ACCESS</div>
+            <div class="feature"><b>✦</b> PRIVATE FILES</div>
+            <div class="feature"><b>✦</b> AUDIT LOGS</div>
+        </div>
+
+    </section>
+
+    <!-- RIGHT: DJANGO LOGIN FORM -->
+    <section class="login-panel">
+
+        <div class="access-badge">
+            <span class="status-dot"></span>
+            AUTHORIZED ACCESS ONLY
+        </div>
+
+        <h2>Welcome Back</h2>
+
+        <p class="subtitle">
+            Sign in to continue to your secure document vault.
+        </p>
+
+        {% if form.errors %}
+            <div class="error-message" role="alert">
+                Login failed. Check your username and password, then try again.
+            </div>
+        {% endif %}
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="error-message" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="id_username">USERNAME</label>
+                <div class="input-box">
+                    <span class="input-icon" aria-hidden="true">♙</span>
+                    <input
+                        type="text"
+                        name="username"
+                        id="id_username"
+                        placeholder="Enter your username"
+                        autocomplete="username"
+                        value="{{ request.POST.username|default:'' }}"
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_password">PASSWORD</label>
+                <div class="input-box">
+                    <span class="input-icon" aria-hidden="true">⌑</span>
+                    <input
+                        type="password"
+                        name="password"
+                        id="id_password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+                    <button
+                        type="button"
+                        class="toggle-password"
+                        onclick="togglePassword()"
+                        aria-label="Show or hide password"
+                    >◉</button>
+                </div>
+            </div>
+
+            <button class="login-button" type="submit">
+                SECURE SIGN IN <span>→</span>
+            </button>
+        </form>
+
+        <p class="signup">
+            New to TrustVault?
+            <a href="{% url 'signup' %}">Create an account</a>
+        </p>
+
+        <div class="bottom-note">
+            TRUSTVAULT &nbsp;•&nbsp; DOCUMENT SECURITY
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+    function togglePassword() {
+        const password = document.getElementById("id_password");
+        const button = document.querySelector(".toggle-password");
+
+        if (password.type === "password") {
+            password.type = "text";
+            button.textContent = "◎";
+        } else {
+            password.type = "password";
+            button.textContent = "◉";
+        }
+    }
+</script>
+
+</body>
+</html>
+```

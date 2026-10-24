@@ -1,0 +1,729 @@
+```html
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#09090c">
+    <title>TrustVault | Secure Document Sharing</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --red: #ed1c24;
+            --bright-red: #ff343c;
+            --bg: #09090c;
+            --panel: #121217;
+            --text: #fafafa;
+            --muted: #a2a2ad;
+            --border: #302127;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* RED GLOW BACKGROUND */
+
+        .background-glow {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(
+                    circle at 80% 30%,
+                    rgba(237, 28, 36, 0.13),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 10% 80%,
+                    rgba(237, 28, 36, 0.08),
+                    transparent 30%
+                );
+        }
+
+        /* NAVIGATION */
+
+        .navbar {
+            width: 100%;
+            padding: 23px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            background: rgba(9,9,12,0.85);
+            backdrop-filter: blur(15px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            background: var(--red);
+            border-radius: 12px;
+            font-size: 23px;
+            box-shadow: 0 0 25px rgba(237,28,36,0.25);
+        }
+
+        .logo span {
+            color: var(--red);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: var(--bright-red);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 13px 21px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 800;
+            transition: 0.25s ease;
+        }
+
+        .btn-outline {
+            border: 1px solid #493039;
+            background: #131015;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--red);
+        }
+
+        .btn-red {
+            background: linear-gradient(110deg, #c81019, #f12630);
+            border: 1px solid #ff424a;
+            color: white;
+            box-shadow: 0 5px 25px rgba(237,28,36,0.13);
+        }
+
+        .btn-red:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(237,28,36,0.3);
+        }
+
+        /* HERO */
+
+        .hero {
+            max-width: 1250px;
+            min-height: 660px;
+            margin: auto;
+            padding: 90px 7%;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            align-items: center;
+            gap: 45px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            border: 1px solid #51242a;
+            background: rgba(237,28,36,0.08);
+            color: #ff777d;
+            border-radius: 50px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 28px;
+        }
+
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--red);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--red);
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(38px, 5vw, 67px);
+            font-weight: 800;
+            letter-spacing: -2.5px;
+            line-height: 1.2;
+            margin-bottom: 27px;
+        }
+
+        .hero h1 span {
+            color: var(--red);
+            text-shadow: 0 0 35px rgba(237,28,36,0.18);
+        }
+
+        .hero-description {
+            max-width: 530px;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.9;
+            margin-bottom: 34px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .hero-buttons .btn {
+            min-height: 52px;
+            padding: 0 24px;
+        }
+
+        .trust-note {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #8f8f9a;
+            font-size: 12px;
+            margin-top: 30px;
+        }
+
+        .trust-note span {
+            color: #ff454d;
+            font-size: 17px;
+        }
+
+        /* SPIDER-INSPIRED VISUAL */
+
+        .visual {
+            min-height: 420px;
+            display: grid;
+            place-items: center;
+            position: relative;
+        }
+
+        .visual-ring {
+            width: min(100%, 390px);
+            aspect-ratio: 1;
+            border: 1px solid #4a2028;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            position: relative;
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(237,28,36,0.13),
+                    transparent 68%
+                );
+            animation: glow 4s ease-in-out infinite;
+        }
+
+        .visual-ring::before,
+        .visual-ring::after {
+            content: "";
+            position: absolute;
+            inset: 18px;
+            border: 1px solid rgba(237,28,36,0.35);
+            border-radius: 50%;
+        }
+
+        .visual-ring::after {
+            inset: 42px;
+            border-style: dashed;
+            animation: rotate 45s linear infinite;
+        }
+
+        .spider-art {
+            width: 57%;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 0 30px rgba(237,28,36,0.3));
+        }
+
+        .floating-card {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 19px;
+            background: rgba(20,18,23,0.95);
+            border: 1px solid #46232b;
+            border-radius: 14px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.4);
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .floating-card.card-top {
+            top: 40px;
+            right: -5px;
+        }
+
+        .floating-card.card-bottom {
+            bottom: 35px;
+            left: -10px;
+            animation-delay: -2.5s;
+        }
+
+        .card-icon {
+            width: 39px;
+            height: 39px;
+            border-radius: 10px;
+            background: #301418;
+            display: grid;
+            place-items: center;
+            color: #ff545c;
+            font-size: 20px;
+        }
+
+        .card-title {
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .card-subtitle {
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        /* FEATURES */
+
+        .features {
+            padding: 75px 7%;
+            background: #0e0e13;
+            border-top: 1px solid #252127;
+            border-bottom: 1px solid #252127;
+        }
+
+        .section-heading {
+            max-width: 650px;
+            margin: 0 auto 45px;
+            text-align: center;
+        }
+
+        .section-heading .small-label {
+            color: var(--red);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .section-heading h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(25px, 3vw, 36px);
+            margin-bottom: 15px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .feature-grid {
+            max-width: 1100px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: #141419;
+            border: 1px solid #2e252c;
+            padding: 30px;
+            border-radius: 18px;
+            transition: 0.25s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #8d2932;
+            box-shadow: 0 15px 35px rgba(237,28,36,0.07);
+        }
+
+        .feature-card-icon {
+            width: 52px;
+            height: 52px;
+            display: grid;
+            place-items: center;
+            background: #2a1217;
+            border: 1px solid #51212a;
+            color: #ff535b;
+            border-radius: 14px;
+            font-size: 23px;
+            margin-bottom: 23px;
+        }
+
+        .feature-card h3 {
+            font-size: 17px;
+            margin-bottom: 13px;
+        }
+
+        .feature-card p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        /* FOOTER */
+
+        footer {
+            padding: 28px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            color: #85858f;
+            font-size: 11px;
+        }
+
+        footer strong {
+            color: var(--red);
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 0 rgba(237,28,36,0); }
+            50% { box-shadow: 0 0 45px rgba(237,28,36,0.08); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 18px 5%;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 65px 7%;
+                gap: 20px;
+            }
+
+            .visual {
+                min-height: 370px;
+            }
+
+            .visual-ring {
+                width: min(80%, 320px);
+            }
+
+            .floating-card.card-top {
+                right: 0;
+            }
+
+            .floating-card.card-bottom {
+                left: 0;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+                max-width: 520px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                gap: 10px;
+            }
+
+            .logo {
+                font-size: 15px;
+                gap: 7px;
+            }
+
+            .logo-icon {
+                width: 34px;
+                height: 34px;
+            }
+
+            .nav-actions {
+                gap: 7px;
+            }
+
+            .nav-actions .btn {
+                padding: 10px 12px;
+                font-size: 11px;
+            }
+
+            .hero h1 {
+                font-size: 37px;
+                letter-spacing: -1.5px;
+            }
+
+            .hero-description {
+                font-size: 14px;
+            }
+
+            .visual {
+                min-height: 310px;
+            }
+
+            .floating-card {
+                padding: 11px;
+            }
+
+            .card-icon {
+                width: 32px;
+                height: 32px;
+            }
+
+            .features {
+                padding: 55px 6%;
+            }
+
+            footer {
+                padding: 25px 6%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                scroll-behavior: auto !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="background-glow"></div>
+
+<!-- NAVIGATION -->
+<header class="navbar">
+
+    <a href="{% url 'home' %}" class="logo">
+        <div class="logo-icon">✦</div>
+        TRUST<span>VAULT</span>
+    </a>
+
+    <nav class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#security">Security</a>
+    </nav>
+
+    <div class="nav-actions">
+        <a href="{% url 'login' %}" class="btn btn-outline">Log In</a>
+        <a href="{% url 'signup' %}" class="btn btn-red">Get Started ↗</a>
+    </div>
+
+</header>
+
+<!-- HERO SECTION -->
+<main>
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                SECURE DOCUMENT MANAGEMENT
+            </div>
+
+            <h1>
+                Your Documents.<br>
+                <span>Your Control.</span>
+            </h1>
+
+            <p class="hero-description">
+                Keep your important files organized and protected.
+                Share documents with the right people, control access,
+                and track important activities with TrustVault.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="{% url 'signup' %}" class="btn btn-red">
+                    Create Your Vault &nbsp; →
+                </a>
+
+                <a href="{% url 'login' %}" class="btn btn-outline">
+                    Sign In
+                </a>
+            </div>
+
+            <div class="trust-note">
+                <span>✦</span>
+                Access control · Private documents · Audit logging
+            </div>
+
+        </div>
+
+        <!-- ORIGINAL SPIDER-INSPIRED SVG ILLUSTRATION -->
+        <div class="visual">
+
+            <div class="visual-ring">
+
+                <svg class="spider-art"
+                     viewBox="0 0 120 150"
+                     xmlns="http://www.w3.org/2000/svg"
+                     role="img"
+                     aria-label="Spider-inspired security illustration">
+
+                    <g fill="none"
+                       stroke="#ed1c24"
+                       stroke-width="4"
+                       stroke-linecap="round"
+                       stroke-linejoin="round">
+
+                        <path d="M60 65 L37 43 L16 45 L6 28"/>
+                        <path d="M60 65 L29 68 L12 84 L4 79"/>
+                        <path d="M60 65 L35 89 L16 105 L6 100"/>
+                        <path d="M60 65 L48 103 L31 124 L18 120"/>
+
+                        <path d="M60 65 L83 43 L104 45 L114 28"/>
+                        <path d="M60 65 L91 68 L108 84 L116 79"/>
+                        <path d="M60 65 L85 89 L104 105 L114 100"/>
+                        <path d="M60 65 L72 103 L89 124 L102 120"/>
+
+                    </g>
+
+                    <path d="M60 20 C43 31 41 51 48 65 L60 79 L72 65 C79 51 77 31 60 20Z"
+                          fill="#ed1c24"/>
+
+                    <path d="M49 39 L59 44 L49 53 L42 45Z" fill="#fff"/>
+                    <path d="M71 39 L61 44 L71 53 L78 45Z" fill="#fff"/>
+
+                    <path d="M60 78 L50 94 L60 105 L70 94Z"
+                          fill="#ed1c24"/>
+
+                </svg>
+
+            </div>
+
+            <div class="floating-card card-top">
+                <div class="card-icon">♢</div>
+                <div>
+                    <div class="card-title">Controlled Access</div>
+                    <div class="card-subtitle">Manage document permissions</div>
+                </div>
+            </div>
+
+            <div class="floating-card card-bottom">
+                <div class="card-icon">◈</div>
+                <div>
+                    <div class="card-title">Audit Activity</div>
+                    <div class="card-subtitle">Track important actions</div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section class="features" id="features">
+
+        <div class="section-heading">
+            <div class="small-label">BUILT FOR DOCUMENT SECURITY</div>
+            <h2>Everything Under Control</h2>
+            <p>
+                Tools to help you manage documents, control sharing,
+                and monitor important document activity.
+            </p>
+        </div>
+
+        <div class="feature-grid">
+
+            <article class="feature-card">
+                <div class="feature-card-icon">▣</div>
+                <h3>Private Document Storage</h3>
+                <p>
+                    Upload and organize your documents while controlling
+                    who can access your files.
+                </p>
+            </article>
+
+            <article class="feature-card" id="security">
+                <div class="feature-card-icon">♙</div>
+                <h3>Permission Management</h3>
+                <p>
+                    Grant or revoke document permissions to manage
+                    access for other registered users.
+                </p>
+            </article>
+
+            <article class="feature-card">
+                <div class="feature-card-icon">◈</div>
+                <h3>Audit Logging</h3>
+                <p>
+                    Record important actions such as document uploads,
+                    downloads, and permission changes.
+                </p>
+            </article>
+
+        </div>
+
+    </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+    <div>© 2026 <strong>TrustVault</strong>. Secure document management.</div>
+    <div>CONTROL ACCESS. PROTECT DOCUMENTS.</div>
+</footer>
+
+</body>
+</html>
+

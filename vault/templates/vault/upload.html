@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Document | TrustVault</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 550px;
+            margin: 40px auto;
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        h1 {
+            color: #38bdf8;
+            text-align: center;
+        }
+
+        p {
+            color: #cbd5e1;
+        }
+
+        input, select, textarea {
+            max-width: 100%;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #0284c7;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        a {
+            color: #38bdf8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Upload a Document</h1>
+
+        <p>Store your documents in TrustVault.</p>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit">Upload Document</button>
+        </form>
+
+        <p>
+            <a href="{% url 'dashboard' %}">← Back to Dashboard</a>
+        </p>
+    </div>
+</body>
+</html>
